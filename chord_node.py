@@ -12,6 +12,7 @@ class ChordNode:
         self.successor = (self.node_id, self.port)  # (ID del sucesor, puerto del sucesor)
         self.predecessor = None
         self.finger_table = [(self.node_id, self.port)] * m  # Inicialmente, el nodo es su propio sucesor
+        self.data = {}  # Diccionario para almacenar archivos (clave: ID del archivo, valor: nombre del archivo)
 
     def hash_function(self, key):
         """ Hash simple basado en SHA-1 para generar IDs de nodo. """
@@ -60,7 +61,6 @@ class ChordNode:
                 id = request['id']
                 port = request['port']
                 conn.sendall(str(self.find_successor(id)[0]).encode('utf-8'))
-                # Notificar que un nodo se ha conectado, usando la solicitud find_successor
                 print(f"Nodo {port} con ID {id} se ha conectado al nodo {self.port} con ID {self.node_id}.")
             elif action == "get_predecessor":
                 conn.sendall(str(self.predecessor).encode('utf-8'))
@@ -71,6 +71,14 @@ class ChordNode:
             elif action == "send_message":
                 message = request['message']
                 print(f"Mensaje recibido de nodo {request['from_port']} (ID {request['from_id']}): {message}")
+            elif action == "find_file":
+                file_id = request['file_id']
+                if file_id in self.data:
+                    response = {"owner_id": self.node_id, "owner_port": self.port, "filename": self.data[file_id]}
+                else:
+                    owner_id, owner_port = self.find_successor(file_id)
+                    response = {"owner_id": owner_id, "owner_port": owner_port, "filename": None}
+                conn.sendall(json.dumps(response).encode('utf-8'))
         except Exception as e:
             print(f"Error al manejar la solicitud de {addr}: {e}")
         finally:
@@ -152,6 +160,40 @@ class ChordNode:
         except Exception as e:
             print(f"Error inesperado al enviar mensaje al nodo en puerto {target_port}: {e}")
 
+    def store_file(self, filename):
+        """Almacena un archivo en el nodo."""
+        file_id = self.hash_function(filename)
+        self.data[file_id] = filename
+        print(f"Archivo '{filename}' con ID {file_id} almacenado en nodo con ID {self.node_id}.")
+
+    def find_file(self, filename):
+        """Encuentra el nodo responsable de almacenar un archivo dado su nombre."""
+        file_id = self.hash_function(filename)
+        responsible_node = self.find_successor(file_id)
+        if responsible_node[0] == self.node_id:
+            print(f"Archivo '{filename}' con ID {file_id} está almacenado en este nodo (ID {self.node_id}).")
+        else:
+            print(f"Archivo '{filename}' con ID {file_id} debería estar en el nodo con ID {responsible_node[0]} (puerto {responsible_node[1]}).")
+            self.request_file(responsible_node, file_id)
+
+    def request_file(self, node, file_id):
+        """Solicita el archivo al nodo responsable."""
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.connect(('localhost', node[1]))
+                s.sendall(json.dumps({
+                    "action": "find_file",
+                    "file_id": file_id
+                }).encode('utf-8'))
+                data = s.recv(1024)
+            response = json.loads(data.decode('utf-8'))
+            if response['filename']:
+                print(f"Archivo encontrado: '{response['filename']}' en nodo {response['owner_id']} (puerto {response['owner_port']}).")
+            else:
+                print(f"Archivo no encontrado en nodo {response['owner_id']} (puerto {response['owner_port']}).")
+        except Exception as e:
+            print(f"Error al solicitar el archivo: {e}")
+
     def run(self):
         """ Inicia el nodo Chord. """
         time.sleep(1)  # Agrega un pequeño delay para permitir que el nodo se configure
@@ -179,8 +221,9 @@ if __name__ == "__main__":
     
     if known_port:
         node.join(int(known_port))
-        node.send_message(50001, "Hola desde nodo 2")
+        node.find_file('ejemplo.txt')  # Nodo 2 busca el archivo 'ejemplo.txt'
     else:
         node.join()
+        node.store_file('ejemplo.txt')  # Nodo 1 almacena el archivo 'ejemplo.txt'
     
     node.run()
