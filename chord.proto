@@ -1,0 +1,40 @@
+syntax = "proto3";
+ 
+package chord;
+ 
+service ChordService {
+  rpc FindSuccessor (FindSuccessorRequest) returns (NodeInfo);
+  rpc GetPredecessor (Empty) returns (NodeInfo);
+  rpc Notify (NodeInfo) returns (Empty);
+  rpc StoreResource (StoreRequest) returns (Empty);
+  rpc LookupResource (LookupRequest) returns (LookupResponse);
+  rpc GetFingerTable (Empty) returns (FingerTableResponse);
+}
+ 
+message Empty {}
+ 
+message NodeInfo {
+  int32 id = 1;
+  string address = 2;
+}
+ 
+message FindSuccessorRequest {
+  int32 id = 1;
+}
+ 
+message StoreRequest {
+  string key = 1;
+  string value = 2;
+}
+ 
+message LookupRequest {
+  string key = 1;
+}
+ 
+message LookupResponse {
+  string value = 1;
+}
+ 
+message FingerTableResponse {
+  repeated NodeInfo entries = 1;
+}
