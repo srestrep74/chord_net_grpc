@@ -9,6 +9,8 @@ service ChordService {
   rpc StoreResource (StoreRequest) returns (Empty);
   rpc LookupResource (LookupRequest) returns (LookupResponse);
   rpc GetFingerTable (Empty) returns (FingerTableResponse);
+  rpc UpdateSuccessor (NodeInfo) returns (Empty);
+  rpc UpdatePredecessor (NodeInfo) returns (Empty);
 }
  
 message Empty {}

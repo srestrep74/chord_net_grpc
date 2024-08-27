@@ -1,7 +1,6 @@
 import grpc
-import chord_pb2
-import chord_pb2_grpc
-from utils import  sha1_hash
+from src.rpc import chord_pb2 , chord_pb2_grpc
+from src.utils import  sha1_hash
 import sys
 
  

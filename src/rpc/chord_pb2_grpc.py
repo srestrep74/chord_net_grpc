@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import chord_pb2 as chord__pb2
+from . import chord_pb2 as chord__pb2
 
 GRPC_GENERATED_VERSION = '1.66.0'
 GRPC_VERSION = grpc.__version__
@@ -64,6 +64,16 @@ class ChordServiceStub(object):
                 request_serializer=chord__pb2.Empty.SerializeToString,
                 response_deserializer=chord__pb2.FingerTableResponse.FromString,
                 _registered_method=True)
+        self.UpdateSuccessor = channel.unary_unary(
+                '/chord.ChordService/UpdateSuccessor',
+                request_serializer=chord__pb2.NodeInfo.SerializeToString,
+                response_deserializer=chord__pb2.Empty.FromString,
+                _registered_method=True)
+        self.UpdatePredecessor = channel.unary_unary(
+                '/chord.ChordService/UpdatePredecessor',
+                request_serializer=chord__pb2.NodeInfo.SerializeToString,
+                response_deserializer=chord__pb2.Empty.FromString,
+                _registered_method=True)
 
 
 class ChordServiceServicer(object):
@@ -105,6 +115,18 @@ class ChordServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def UpdateSuccessor(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdatePredecessor(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ChordServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -137,6 +159,16 @@ def add_ChordServiceServicer_to_server(servicer, server):
                     servicer.GetFingerTable,
                     request_deserializer=chord__pb2.Empty.FromString,
                     response_serializer=chord__pb2.FingerTableResponse.SerializeToString,
+            ),
+            'UpdateSuccessor': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateSuccessor,
+                    request_deserializer=chord__pb2.NodeInfo.FromString,
+                    response_serializer=chord__pb2.Empty.SerializeToString,
+            ),
+            'UpdatePredecessor': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdatePredecessor,
+                    request_deserializer=chord__pb2.NodeInfo.FromString,
+                    response_serializer=chord__pb2.Empty.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -301,6 +333,60 @@ class ChordService(object):
             '/chord.ChordService/GetFingerTable',
             chord__pb2.Empty.SerializeToString,
             chord__pb2.FingerTableResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateSuccessor(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/chord.ChordService/UpdateSuccessor',
+            chord__pb2.NodeInfo.SerializeToString,
+            chord__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdatePredecessor(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/chord.ChordService/UpdatePredecessor',
+            chord__pb2.NodeInfo.SerializeToString,
+            chord__pb2.Empty.FromString,
             options,
             channel_credentials,
             insecure,

@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0b\x63hord.proto\x12\x05\x63hord\"\x07\n\x05\x45mpty\"\'\n\x08NodeInfo\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x01(\t\"\"\n\x14\x46indSuccessorRequest\x12\n\n\x02id\x18\x01 \x01(\x05\"*\n\x0cStoreRequest\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"\x1c\n\rLookupRequest\x12\x0b\n\x03key\x18\x01 \x01(\t\"\x1f\n\x0eLookupResponse\x12\r\n\x05value\x18\x01 \x01(\t\"7\n\x13\x46ingerTableResponse\x12 \n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x0f.chord.NodeInfo2\xd6\x02\n\x0c\x43hordService\x12=\n\rFindSuccessor\x12\x1b.chord.FindSuccessorRequest\x1a\x0f.chord.NodeInfo\x12/\n\x0eGetPredecessor\x12\x0c.chord.Empty\x1a\x0f.chord.NodeInfo\x12\'\n\x06Notify\x12\x0f.chord.NodeInfo\x1a\x0c.chord.Empty\x12\x32\n\rStoreResource\x12\x13.chord.StoreRequest\x1a\x0c.chord.Empty\x12=\n\x0eLookupResource\x12\x14.chord.LookupRequest\x1a\x15.chord.LookupResponse\x12:\n\x0eGetFingerTable\x12\x0c.chord.Empty\x1a\x1a.chord.FingerTableResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0b\x63hord.proto\x12\x05\x63hord\"\x07\n\x05\x45mpty\"\'\n\x08NodeInfo\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x01(\t\"\"\n\x14\x46indSuccessorRequest\x12\n\n\x02id\x18\x01 \x01(\x05\"*\n\x0cStoreRequest\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"\x1c\n\rLookupRequest\x12\x0b\n\x03key\x18\x01 \x01(\t\"\x1f\n\x0eLookupResponse\x12\r\n\x05value\x18\x01 \x01(\t\"7\n\x13\x46ingerTableResponse\x12 \n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x0f.chord.NodeInfo2\xbc\x03\n\x0c\x43hordService\x12=\n\rFindSuccessor\x12\x1b.chord.FindSuccessorRequest\x1a\x0f.chord.NodeInfo\x12/\n\x0eGetPredecessor\x12\x0c.chord.Empty\x1a\x0f.chord.NodeInfo\x12\'\n\x06Notify\x12\x0f.chord.NodeInfo\x1a\x0c.chord.Empty\x12\x32\n\rStoreResource\x12\x13.chord.StoreRequest\x1a\x0c.chord.Empty\x12=\n\x0eLookupResource\x12\x14.chord.LookupRequest\x1a\x15.chord.LookupResponse\x12:\n\x0eGetFingerTable\x12\x0c.chord.Empty\x1a\x1a.chord.FingerTableResponse\x12\x30\n\x0fUpdateSuccessor\x12\x0f.chord.NodeInfo\x1a\x0c.chord.Empty\x12\x32\n\x11UpdatePredecessor\x12\x0f.chord.NodeInfo\x1a\x0c.chord.Emptyb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -46,5 +46,5 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_FINGERTABLERESPONSE']._serialized_start=215
   _globals['_FINGERTABLERESPONSE']._serialized_end=270
   _globals['_CHORDSERVICE']._serialized_start=273
-  _globals['_CHORDSERVICE']._serialized_end=615
+  _globals['_CHORDSERVICE']._serialized_end=717
 # @@protoc_insertion_point(module_scope)

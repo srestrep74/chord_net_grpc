@@ -1,6 +1,6 @@
-import chord_pb2, grpc
-import chord_pb2_grpc, time
-from utils import sha1_hash
+from src.rpc import chord_pb2, chord_pb2_grpc
+import grpc , time
+from src.utils import sha1_hash
 
 class Node:
     def __init__(self, id, address, m_bits=6):
@@ -12,16 +12,6 @@ class Node:
         self.successor = None
         self.storage = {}
  
-    """def find_successor(self, id):
-        if self.successor and self.in_range(id, self.id, self.successor.id, inclusive=True):
-            return self.successor
-        n = self.closest_preceding_node(id)
-        if n.id == self.id:
-            return self
-        with grpc.insecure_channel(n.address) as channel:
-            stub = chord_pb2_grpc.ChordServiceStub(channel)
-            response = stub.FindSuccessor(chord_pb2.FindSuccessorRequest(id=id))
-            return Node(response.id, response.address)"""
     def find_successor(self, id):
         if self.in_range(id, self.id, self.successor.id, inclusive=True):
             return self.successor
@@ -79,17 +69,6 @@ class Node:
             self.successor = self
         self.predecessor = None
  
-    """def stabilize(self):
-        with grpc.insecure_channel(self.successor.address) as channel:
-            stub = chord_pb2_grpc.ChordServiceStub(channel)
-            response = stub.GetPredecessor(chord_pb2.Empty())
-            if response.id != -1:
-                x = Node(response.id, response.address)
-                if self.in_range(x.id, self.id, self.successor.id, inclusive=False):
-                    self.successor = x
-        with grpc.insecure_channel(self.successor.address) as channel:
-            stub = chord_pb2_grpc.ChordServiceStub(channel)
-            stub.Notify(chord_pb2.NodeInfo(id=self.id, address=self.address))"""
     def stabilize(self):
         if self.successor:
             with grpc.insecure_channel(self.successor.address) as channel:
