@@ -9,7 +9,96 @@ Para el presente reto se implemento una red P2P mediante el protocolo Chord DHT.
 - gRPC para Comunicación: Se utiliza gRPC para manejar la comunicación entre nodos, permitiendo que los nodos envíen y reciban solicitudes de búsqueda y transferencia de archivos.
 
 ## Servicios definidos
+Este servidor Chord implementa una red distribuida utilizando el protocolo gRPC para la comunicación entre nodos. A continuación, se detalla la especificación completa de los servicios ofrecidos por esta implementación.
+
+### 1. `FindSuccessor`
+
+- **Método**: `FindSuccessor`
+- **Tipo**: RPC
+- **Descripción**: Encuentra el sucesor de un nodo dado un identificador.
+- **Solicitudes**:
+  - `FindSuccessorRequest`:
+    - `id` (int32): El identificador del nodo cuyo sucesor se desea encontrar.
+- **Respuestas**:
+  - `NodeInfo`:
+    - `id` (int32): Identificador del nodo sucesor.
+    - `address` (string): Dirección del nodo sucesor.
+
+### 2. `GetPredeccessor`
+
+- **Método**: `GetPredecessor`
+- **Tipo**: RPC
+- **Descripción**: Obtiene la información del predecesor del nodo.
+- **Solicitudes**:
+  - `Empty`: No se requieren datos adicionales.
+- **Respuestas**:
+  - `NodeInfo`:
+    - `id` (int32): Identificador del nodo predecesor.
+    - `address` (string): Dirección del nodo predecesor.
+
+### 3. `Notify`
+
+- **Método**: `Notify`
+- **Tipo**: RPC
+- **Descripción**: Notifica al nodo sobre su nuevo predecesor.
+- **Solicitudes**:
+    - `NodeInfo`:
+       - `id` (int32): Identificador del nodo que está notificando.
+       - `address` (string): Dirección del nodo que está notificando.
+- **Respuestas**:
+ - `Empty`: No se requieren datos adicionales.
+
+### 4. `StoreResource`
+
+- **Método**: `StoreResource`
+- **Tipo**: RPC
+- **Descripción**: Almacena un recurso en el DHT.
+- **Solicitudes**:
+    - `StoreRequest`:
+       - `key` (string): Clave del recurso.
+       - `value` (string):  Valor del recurso.
+- **Respuestas**:
+ - `Empty`: Confirmación de que el recurso ha sido almacenado.
+
+### 5. `LookupResource`
+
+- **Método**: `LookupResource`
+- **Tipo**: RPC
+- **Descripción**: Busca un recurso en el DHT utilizando una clave
+- **Solicitudes**:
+    - `LookupRequest`:
+       - `key` (string): Clave del recurso a buscar.
+- **Respuestas**:
+    - `LookupRequest`:
+       - `value` (string) : Valor asociado con la clave, o un mensaje de error si no se encuentra.
+
+### 6. `UpdateSuccessor`
+
+- **Método**: `UpdateSuccessor`
+- **Tipo**: RPC
+- **Descripción**: Actualiza la información sobre el sucesor del nodo.
+- **Solicitudes**:
+    - `NodeInfo`:
+       - `id` (int32): Identificador del nuevo sucesor.
+       - `address` (string): Dirección del nuevo sucesor.
+- **Respuestas**:
+    - `Empty` : Confirmación de que la información ha sido actualizada.
+
+### 7. `UpdatePredecessor`
+
+- **Método**: `UpdatePredecessor`
+- **Tipo**: RPC
+- **Descripción**: Actualiza la información sobre el predecesor del nodo.
+- **Solicitudes**:
+    - `NodeInfo`:
+       - `id` (int32): Identificador del nuevo predecesor.
+       - `address` (string): Dirección del nuevo predecesor.
+- **Respuestas**:
+    - `Empty` : Confirmación de que la información ha sido actualizada.
+      
 ## Diagrama de Secuencias
+![Diagrama de Secuencias Chord DHT](https://www.planttext.com/api/plantuml/png/fLPDRzim3BtxLn0znK3MxLmWGu6Y6J84sT2ikmn3eCPq8yILF4bEb_twKVANP2UEr_MGHZJvI3u-qRdLXYbJl6GHsngfu56ZYd8oyItFcJ1mjP89NW7JOB-4Z-vsKYMmHdNWszB7MIf3wBikjblKcb8qW8sfZ_nLOO9TVy_e8gBPp3s4EuNCS2c0YGG-IowuU0QpGrYXUPLg3xDP5DdEuDt7Ck86rhRlyZ0HzBdXoHHOaYZ2tvWTrnjhRKsIy9IpnP6BQg4MWXlEClw7e3oKAQHK1mKPzfGHKjwMFmLTznv7B3EmIA4gWcg53n7GNoUBxQjfQBAIWWh1J6FW6r3Q2vfpaJGU3_YhG6seubcLEeuTLeX1eFvG2JD06GiQO9merFvRY5Jw19ufPp02HJ8mdhaR27op0nbmyuJsladlv4QgUUBaKyhDokeSyxKdQU8J6WynZYuH7Fh3vFubDySu6asX9pIdQl_S47MHrb4evxfVISFJevLfXTPSCVUbZh_CnMYWI-mu4jqC7r3BGf7NbnoL6wG-lI2amjPviiVZ50uiA_eBeEEwb5kMPLIq9ZjxnXyK-XDcTR1ttu5heFfpAe6J926bSTkzHG6dLa2P9olXBr_-kLIlp2ve6rRTJ9Zu9x-fSPU_Ygv96GORDnDxPRlaBwNS5td8Ve_soibje1ORP0hE-mqykofkAAqfb83ljfLcYjVFw5gCHwpTclcomeRwu5XXZI6zZgl9E8TpYUy6nnA1aqgFGqlsVCG0PUL4wQOjaHr6l8hlVtDJFm-cjgENlhTsWhoT7mC4yvWdpA0dX7PfD6zRjpdQKxi-B7GNiZ-8CiNRCtG7r6-YlH9T8XhCGULL90JlZtzQwUCKMQRvtopZzqD7RQkQb0nJu-GbAlb4j-HkVyx-1G00)
+
 
 ## Organizacion del Proyecto
 La estructura del proyecto está organizada de manera que cada componente tiene un propósito específico en la implementación del DHT de Chord. A continuación se detalla la organización de directorios y la función de cada archivo.
