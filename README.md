@@ -8,6 +8,9 @@ Para el presente reto se implemento una red P2P mediante el protocolo Chord DHT.
 - Responsabilidad de los Nodos: Cada nodo es responsable de un intervalo de claves en el espacio de hash, y cualquier archivo que se hash en ese intervalo es responsabilidad de ese nodo.
 - gRPC para Comunicación: Se utiliza gRPC para manejar la comunicación entre nodos, permitiendo que los nodos envíen y reciban solicitudes de búsqueda y transferencia de archivos.
 
+## Servicios definidos
+## Diagrama de Secuencias
+
 ## Organizacion del Proyecto
 La estructura del proyecto está organizada de manera que cada componente tiene un propósito específico en la implementación del DHT de Chord. A continuación se detalla la organización de directorios y la función de cada archivo.
 
