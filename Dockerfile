@@ -2,12 +2,14 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY . /app
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
-
 EXPOSE 50051
 
-CMD ["python", "peer.py", "0", "0.0.0.0:50051", "none"]
+ENV NODE_ID=0
+ENV ADDRESS_THIS_NODE=0.0.0.0:50051
+ENV ADDRESS_OTHER_NODE=0.0.0.0:50052
+
+CMD ["python", "peer.py", "$NODE_ID", "$ADDRESS_THIS_NODE", "$ADDRESS_OTHER_NODE"]
